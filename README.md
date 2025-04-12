@@ -1,2 +1,5 @@
+-2 mqtt topic
+-mqtt false = data over esp-now
 
-![WhatsApp Image 2025-04-11 at 15 33 08](https://github.com/user-attachments/assets/745990ec-2201-4642-b927-2b43c0a0c09d)
+
+![IMG_0528 2](https://github.com/user-attachments/assets/76846441-5156-473b-9bf7-0a5b4d66472f)
