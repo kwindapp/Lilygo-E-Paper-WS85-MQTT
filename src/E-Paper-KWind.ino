@@ -4,6 +4,7 @@
 #include "opensans10b.h"
 #include <ArduinoJson.h>
 #include <PubSubClient.h>  // MQTT library
+#include <time.h>
 #include "opensans12b.h"
 #include "opensans18b.h"
 #include "opensans24b.h"
@@ -23,14 +24,15 @@
 
 // Choose method: true = MQTT, false = ESP-NOW
 bool useMQTT = true;  
-const char* mqtt_server = "152.xxxxxxxxxx";  
+const char* mqtt_server = "152xxxx";  
 
 
 // Topic
 //const char* mqtt_topic = "KWind/data/WS80_Lora";
 const char* mqtt_topic = "helium/data";
 
-
+int timezone = 3600;        // +1 hour
+int dst = 3600;             // +1 hour for DST
 
 
 WiFiClient espClient;
@@ -216,7 +218,13 @@ void setup() {
     localMac = WiFi.macAddress();
     Serial.print("📡 MAC: ");
     Serial.println(localMac);
-  
+    configTime(-3600, 0, "pool.ntp.org", "time.nist.gov");
+    Serial.print("⏳ Waiting for time sync");
+    while (time(nullptr) < 100000) {
+      Serial.print(".");
+      delay(500);
+    }
+    Serial.println("\n✅ Time synced");
     if (esp_now_init() != ESP_OK) {
       Serial.println("❌ ESP-NOW init failed!");
       return;
@@ -474,6 +482,22 @@ snprintf(model, sizeof(model), "   %s", receivedData.model.c_str());  // format 
 cursor_x = 10;             // Starting X position for values
 cursor_y = 440 + custom_y;  // Starting Y position within the area
 writeln((GFXfont *)&OpenSans12B, model, &cursor_x, &cursor_y, NULL);  // print model
+
+
+
+time_t now = time(nullptr);
+struct tm* timeinfo = localtime(&now);
+
+char timeStr[32];
+strftime(timeStr, sizeof(timeStr), " %H:%M:%S", timeinfo);
+
+Rect_t timestampArea = { 755, 420 + custom_y, .width = 170, .height = 40 };
+epd_clear_area(timestampArea);
+cursor_x = 755;
+cursor_y = 440 + custom_y;
+writeln((GFXfont *)&OpenSans12B, timeStr, &cursor_x, &cursor_y, NULL);
+
+
 
 }
 
