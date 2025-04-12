@@ -1,6 +1,7 @@
 WS80-WS85 3-1 UltraSonic
--2 mqtt topic
+-2 mqtt topics
 -mqtt false = data over esp-now
+-timestamp
 
 https://lilygo.cc/products/t5-4-7-inch-e-paper-v2-3?srsltid=AfmBOor-dI-Gr2DYtUMT3I77Eyy98FKmpzOLIlqLdEmI-N6JGfVKdpqv
 
