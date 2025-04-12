@@ -1,3 +1,4 @@
+-WS85 3-1 UltraSonic
 -2 mqtt topic
 -mqtt false = data over esp-now
 
